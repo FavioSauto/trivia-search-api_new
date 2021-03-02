@@ -1,6 +1,15 @@
-# New Project
+# A small trivia game
 
-> ✨ Bootstrapped with Create Snowpack App (CSA).
+This projects still has its own share of bugs, to correctly start the game press the search new game button and it will fetch the api for more questions.
+
+## Instructions
+- Clone the repository
+
+- Install dependencies with:
+```npm i```
+
+- Run with:
+```npm start || npm run start```
 
 ## Available Scripts
 
