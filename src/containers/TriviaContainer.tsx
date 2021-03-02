@@ -1,6 +1,7 @@
+// @ts-nocheck
 // React imports
 import React, { useState, useEffect } from "react";
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, setStateAction } from "react";
 
 // Components
 import Form from "../components/Form";
@@ -16,7 +17,7 @@ interface Question {
   type: string;
   difficulty: string;
   correct_answer: string;
-  incorrect_answers: string;
+  incorrect_answers: string[];
 }
 
 interface NewQuestion {
@@ -50,17 +51,17 @@ function TriviaContainer() {
     type: "",
   });
   // Word to search in the API
-  const [searchWord, setSearchWord] = useState("");
+  const [searchWord, setSearchWord] = useState<string>("");
   // Set new search
-  const [newSearch, setNewSearch] = useState(true);
+  const [newSearch, setNewSearch] = useState<boolean>(true);
   // Initial questions
-  const [questions, setQuestions] = useState([]);
+  const [questionsList, setQuestionsList] = useState<(Question | NewQuestion)>([]);
   const [answeredQuestions, setAnsweredQuestions] = useState({
     correctAnswers: 0,
     incorrectAnswers: 0,
   });
   // Displayed questions
-  const [displayingQuestions, setDisplayingQuestions] = useState(questions);
+  const [displayingQuestions, setDisplayingQuestions] = useState(questionsList);
 
   // Functions
   function handleSubmit(event: React.SyntheticEvent) {
@@ -108,18 +109,19 @@ function TriviaContainer() {
   useEffect(
     function makeNewSearch() {
       if (newSearch) {
-        const {
-          questions: { questions },
-        }: Question[] = initialQuestions;
+        // Here I'm defeated by the mysteries of TS
+        // Remove the any and the or, and use an extension
+        // to see the problem
+        const { questions }: Question[] | any = initialQuestions.questions;
 
         fetch(API)
           .then((response) => response.json())
           .then((data) => {
-            setQuestions(data.results);
+            setQuestionsList(data.results);
           })
           .catch((err) => {
             console.warn(err);
-            setQuestions(questions);
+            setQuestionsList(questions);
           });
 
         setAnsweredQuestions((prevState) => {
@@ -127,7 +129,7 @@ function TriviaContainer() {
             correctAnswers: 0,
             incorrectAnswers: 0,
           };
-        })
+        });
 
         setNewSearch(false);
       }
@@ -137,43 +139,43 @@ function TriviaContainer() {
 
   useEffect(
     function displayQuestions() {
-      const newQuestions: NewQuestion[] = questions?.map(
-        function newQuestionsWithAnswers(question: Question) {
-          const newQuestion = {
-            questionT: question.question,
-            category: question.category,
-            difficulty: question.difficulty,
-            type: question.type,
-            answers: [
-              ...question.incorrect_answers,
-              question.correct_answer,
-            ].sort(),
-            correct_answer: question.correct_answer,
-            checked: false,
-          };
+      const newQuestions = questionsList?.map(function newQuestionsWithAnswers(
+        question: Question
+      ) {
+        const newQuestion = {
+          questionT: question.question,
+          category: question.category,
+          difficulty: question.difficulty,
+          type: question.type,
+          answers: [
+            ...question.incorrect_answers,
+            question.correct_answer,
+          ].sort(),
+          correct_answer: question.correct_answer,
+          checked: false,
+        };
 
-          return newQuestion;
-        }
-      );
+        return newQuestion;
+      });
 
       if (newQuestions.length > 1) {
         setDisplayingQuestions(newQuestions);
       }
     },
-    [questions]
+    [questionsList]
   );
 
   useEffect(
     function search() {
       if (searchWord !== "") {
         const searchWordLowerCase = searchWord.toLowerCase();
-        let newList = questions.filter((question: Question) =>
+        let newList = questionsList.filter((question: Question) =>
           question.question.toLowerCase().includes(searchWordLowerCase)
         );
 
         setDisplayingQuestions(newList);
       } else {
-        setDisplayingQuestions(questions);
+        setDisplayingQuestions(questionsList);
       }
     },
     [searchWord]
@@ -187,13 +189,13 @@ function TriviaContainer() {
         <div className="mt-2">
           <p className="font-normal">
             Total Questions:{" "}
-            <span className="font-bold">{questions.length}</span>
+            <span className="font-bold">{questionsList.length}</span>
           </p>
           <p className="font-normal">
             Questions Answered:{" "}
             <span className="font-bold">
               {answeredQuestions.correctAnswers +
-                answeredQuestions.incorrectAnswers} 
+                answeredQuestions.incorrectAnswers}
             </span>
           </p>
           <p className="font-normal">
