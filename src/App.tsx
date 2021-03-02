@@ -1,42 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+
+// Components
+import Header from './components/Header'
+import TriviaContainer from './containers/TriviaContainer'
+import Modal from './components/Modal'
 
 interface AppProps {}
 
 function App({}: AppProps) {
-  // Create the count state.
-  const [count, setCount] = useState(0);
-  // Create the counter (+1 every second).
-  useEffect(() => {
-    const timer = setTimeout(() => setCount(count + 1), 1000);
-    return () => clearTimeout(timer);
-  }, [count, setCount]);
+  const [showModal, setShowModal] = useState(true)
+
   // Return the App component.
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <p>
-          Page has been open for <code>{count}</code> seconds.
-        </p>
-        <p>
-          We are using <span className="text-4xl text-indigo-50">TailwindCSS</span>
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
+    <div className="App bg-gray-200">
+      <Header />
+      <Modal showModal={showModal} setShowModal={setShowModal}/>
+      <TriviaContainer />
     </div>
   );
 }
