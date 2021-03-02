@@ -29,13 +29,13 @@ function Form({
   handleReset,
 }: FormProps) {
   return (
-    <div className="FormWrapper col-span-2">
+    <div className="FormWrapper lg:col-span-2 my-2">
       <form
         onSubmit={handleSubmit}
-        className="TriviaList-form flex content-between flex-wrap"
+        className="TriviaList-form flex h-56 content-between flex-wrap"
         id="filterForm"
       >
-        <div className="TriviaList-formGroup mb-4">
+        <div className="TriviaList-formGroup">
           <label className="font-bold" htmlFor="amount">
             Number of questions:{" "}
           </label>

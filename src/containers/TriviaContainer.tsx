@@ -180,9 +180,9 @@ function TriviaContainer() {
   );
 
   return (
-    <div className="TriviaList w-4/5 h-4/5 p-5 shadow-lg rounded-md grid grid-cols-3 gap-5 bg-white mx-auto my-6">
-      <div>
-        <h2 className="TriviaList-title text-2xl">Questions</h2>
+    <div className="TriviaList lg:w-4/5 lg:h-4/5 lg:p-5 p-3 gap-3 shadow-lg rounded-md grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5 bg-white mx-auto my-6">
+      <div className="mb-2">
+        <h2 className="TriviaList-title text-lg">Questions</h2>
 
         <div className="mt-2">
           <p className="font-normal">
@@ -193,7 +193,7 @@ function TriviaContainer() {
             Questions Answered:{" "}
             <span className="font-bold">
               {answeredQuestions.correctAnswers +
-                answeredQuestions.incorrectAnswers}
+                answeredQuestions.incorrectAnswers} 
             </span>
           </p>
           <p className="font-normal">

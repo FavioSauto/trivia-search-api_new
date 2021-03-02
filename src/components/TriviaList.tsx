@@ -28,7 +28,7 @@ function TriviaList({
   displayingQuestions,
 }: TriviaListProps) {
   return (
-    <div className="TriviaList col-span-3 grid grid-cols-3 gap-5 bg-white">
+    <div className="TriviaList sm:col-span-2 sm:grid-cols-2 lg:col-span-3 grid lg:grid-cols-3 gap-3 lg:gap-5 bg-white">
       {displayingQuestions?.map((question, index) => (
         <TriviaCard
           setAnsweredQuestions={setAnsweredQuestions}
