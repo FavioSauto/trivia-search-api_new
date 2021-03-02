@@ -1,34 +1,80 @@
-import React from "react";
+// React Components
+import React, { useState, useEffect } from "react";
 
+// Interfaces
 interface Question {
-  question: string;
+  questionT: string;
   category: string;
-  type: string;
   difficulty: string;
+  type: string;
   correct_answer: string;
-  incorrect_answers: string[];
+  answers: string[];
+  checked: boolean;
+}
+
+interface AnsweredQuestions {
+  correctAnswers: number;
+  incorrectAnswers: number;
 }
 
 interface TriviaCardProps {
+  setAnsweredQuestions: (answeredQuestions: AnsweredQuestions) => void;
   question: Question;
 }
 
-function TriviaCard(props: TriviaCardProps) {
+// Component
+function TriviaCard({ setAnsweredQuestions, question }: TriviaCardProps) {
+  // Props
+  // Here I'm change question for questionT (question Title) due to a identifier error
   const {
-    question: {
-      question,
-      category,
-      type,
-      difficulty,
-      correct_answer,
-      incorrect_answers,
-    },
-  } = props;
+    questionT,
+    category,
+    type,
+    difficulty,
+    correct_answer,
+    answers,
+  }: Question = question;
 
-  const answers = [...incorrect_answers, correct_answer].sort();
+  // State
+  const [checked, setChecked] = useState(question.checked);
+  const [answerChosed, setAnswerChosed] = useState("");
+
+  // Effects
+  useEffect(
+    function answerChecked() {
+      if (answerChosed === correct_answer) {
+        setAnsweredQuestions((prevState) => {
+          return {
+            ...prevState,
+            correctAnswers: prevState.correctAnswers + 1,
+          };
+        });
+      } else {
+        setAnsweredQuestions((prevState) => {
+          return {
+            ...prevState,
+            incorrectAnswers: prevState.incorrectAnswers + 1,
+          };
+        });
+      }
+    },
+    [checked]
+  );
+
+  useEffect(() => {
+    setChecked(false);
+  }, [question]);
 
   return (
-    <div className="TriviaCard py-4 px-5 rounded-md shadow-lg border select-none">
+    <div
+      className={`TriviaCard py-4 px-5 rounded-md shadow-lg border select-none ${
+        !checked
+          ? "bg-white"
+          : answerChosed === correct_answer
+          ? "bg-green-500"
+          : "bg-red-500"
+      }`}
+    >
       <h3 className="TriviaCard-question-title">
         <div
           className={`TriviaCard-question-difficulty p-1 rounded-md font-bold text-black ${
@@ -39,7 +85,7 @@ function TriviaCard(props: TriviaCardProps) {
               : "bg-red-400"
           }`}
         />
-        {question}{" "}
+        {questionT}
       </h3>
 
       <p className="TriviaCard-category font-bold my-1">
@@ -51,23 +97,26 @@ function TriviaCard(props: TriviaCardProps) {
       </p>
 
       <div className="TriviaCard-answers-container my-4">
-        {answers.map((answer, index) => {
-          const answerDash = answer.replace(/\s/g , "-")
-          const questionDash = question.replace(/\s/g , "-")
-          console.log(question, questionDash)
+        {answers?.map((answer, index) => {
+          const answerDash = answer.replace(/\s/g, "-");
+          const questionDash = questionT.replace(/\s/g, "-");
 
+          // debugger
           return (
             <div className="flex items-centered">
+              {}
               <input
                 type="radio"
                 key={index}
-                className={`TriviaCard-answer my-2 cursor-pointer checked:bg-blue-600 checked:border-transparent ${
-                  answer === correct_answer
-                    ? "bg-green-400 rounded-md"
-                    : "incorrect"
-                }`}
+                className={`TriviaCard-answer my-2 cursor-pointer checked:bg-blue-600 checked:border-transparent`}
                 value={`answer${index}-${answerDash}`}
-                id={`answer${index}-${answerDash}`}
+                onChange={() => {
+                  setAnswerChosed(answer);
+                  setChecked(true);
+                }}
+                checked={answer === answerChosed}
+                onClick={() => {}}
+                disabled={!checked ? false : true}
                 name={`question-${questionDash}-answer`}
               ></input>
               <label htmlFor={`answer${index}-${answerDash}`} className="ml-2">

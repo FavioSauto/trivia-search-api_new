@@ -1,27 +1,44 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent } from "react";
 
 interface FormValues {
-  amount: number,
-  category: string,
-  difficulty: string,
-  type: string
+  amount: number;
+  category: string;
+  difficulty: string;
+  type: string;
 }
 
 interface FormProps {
-  handleSubmit: (event: React.SyntheticEvent) => void,
-  handleChange: (event: ChangeEvent<HTMLInputElement|HTMLSelectElement> ) => void,
-  formValues: FormValues,
-  handleSearch: (event: ChangeEvent<HTMLButtonElement|MouseEvent|any>) => void,
-  searchWord: string,
-  handleReset: () => void
+  handleSubmit: (event: React.SyntheticEvent) => void;
+  handleChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+  formValues: FormValues;
+  handleSearch: (
+    event: ChangeEvent<HTMLButtonElement | MouseEvent | any>
+  ) => void;
+  searchWord: string;
+  handleReset: () => void;
 }
 
-function Form({ handleSubmit, handleChange, formValues, handleSearch, searchWord, handleReset }: FormProps) {
+function Form({
+  handleSubmit,
+  handleChange,
+  formValues,
+  handleSearch,
+  searchWord,
+  handleReset,
+}: FormProps) {
   return (
     <div className="FormWrapper col-span-2">
-      <form onSubmit={handleSubmit} className="TriviaList-form flex content-between flex-wrap" id="filterForm">
+      <form
+        onSubmit={handleSubmit}
+        className="TriviaList-form flex content-between flex-wrap"
+        id="filterForm"
+      >
         <div className="TriviaList-formGroup mb-4">
-          <label className="font-bold" htmlFor="amount">Number of questions: </label>
+          <label className="font-bold" htmlFor="amount">
+            Number of questions:{" "}
+          </label>
           <input
             onChange={handleChange}
             type="number"
@@ -33,7 +50,9 @@ function Form({ handleSubmit, handleChange, formValues, handleSearch, searchWord
         </div>
 
         <div className="TriviaList-formGroup">
-          <label className="font-bold" htmlFor="category">Select Category: </label>
+          <label className="font-bold" htmlFor="category">
+            Select Category:{" "}
+          </label>
           <select
             onChange={handleChange}
             name="category"
@@ -70,7 +89,9 @@ function Form({ handleSubmit, handleChange, formValues, handleSearch, searchWord
         </div>
 
         <div className="TriviaList-formGroup">
-          <label className="font-bold" htmlFor="difficulty">Select Difficulty: </label>
+          <label className="font-bold" htmlFor="difficulty">
+            Select Difficulty:{" "}
+          </label>
           <select
             onChange={handleChange}
             name="difficulty"
@@ -86,7 +107,9 @@ function Form({ handleSubmit, handleChange, formValues, handleSearch, searchWord
         </div>
 
         <div className="TriviaList-formGroup">
-          <label className="font-bold" htmlFor="type">Select Type: </label>
+          <label className="font-bold" htmlFor="type">
+            Select Type:{" "}
+          </label>
           <select
             onChange={handleChange}
             name="type"
@@ -101,7 +124,9 @@ function Form({ handleSubmit, handleChange, formValues, handleSearch, searchWord
         </div>
 
         <div className="TriviaList-formGroup">
-          <label className="font-bold" htmlFor="words">Search words: </label>
+          <label className="font-bold" htmlFor="words">
+            Search words:{" "}
+          </label>
           <input
             onChange={handleSearch}
             type="text"
@@ -124,11 +149,11 @@ function Form({ handleSubmit, handleChange, formValues, handleSearch, searchWord
           id="btn-resetTrivia"
           onClick={handleReset}
         >
-          Reset
+          Reset Form
         </button>
       </form>
     </div>
-  )
+  );
 }
 
-export default Form
+export default Form;
